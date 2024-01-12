@@ -34,6 +34,8 @@ public:
         CHANGE_SAILS
     };
 
+    Game();
+
     /// @brief Called once per frame, used to keep track of where we are for movement, animations etc...
     void Tick();
 

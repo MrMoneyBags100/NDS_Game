@@ -21,6 +21,7 @@ public:
     bool canRun = 1;
     bool canJump = 1;
 
+    Player();
     void HandleInput(int keys, int mode);
     void Move();
 };
