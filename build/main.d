@@ -60,6 +60,7 @@ main.o: C:/devkitPro/examples/nds/MYTESTGAME/source/main.cpp \
  C:\devkitPro\libnds\include\nds/arm9/video.h \
  C:\devkitPro\libnds\include\nds/arm9/videoGL.h \
  C:\devkitPro\libnds\include\nds/arm9/nand.h \
+ C:\devkitPro\libnds\include\filesystem.h \
  C:/devkitPro/examples/nds/MYTESTGAME/include/tempNFlib.h \
  C:\devkitPro\nflib\include\nf_2d.h C:/devkitPro/libnds/include/nds.h \
  C:\devkitPro\nflib\include\nf_sprite256.h \
@@ -144,6 +145,7 @@ C:\devkitPro\libnds\include\nds/arm9/trig_lut.h:
 C:\devkitPro\libnds\include\nds/arm9/video.h:
 C:\devkitPro\libnds\include\nds/arm9/videoGL.h:
 C:\devkitPro\libnds\include\nds/arm9/nand.h:
+C:\devkitPro\libnds\include\filesystem.h:
 C:/devkitPro/examples/nds/MYTESTGAME/include/tempNFlib.h:
 C:\devkitPro\nflib\include\nf_2d.h:
 C:/devkitPro/libnds/include/nds.h:

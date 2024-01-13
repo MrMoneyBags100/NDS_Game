@@ -4,10 +4,10 @@
 
 Game game;
 
-int main ()
+int main (int argc, char **argv)
 {
 
-    game.StartMenuScreen();
+    game.Init();
 
     while (1)
     {

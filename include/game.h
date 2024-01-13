@@ -6,8 +6,8 @@
 #include <memory>
 
 #include <C:\devkitPro\libnds\include\nds.h>
+#include <C:\devkitPro\libnds\include\filesystem.h>
 #include <../include/tempNFlib.h>
-// #include <C:\devkitPro\nflib\include\nf_lib.h>
 // #include <C:\devkitPro\libnds\include\gl2d.h>
 
 
@@ -23,17 +23,12 @@ private:
 
     int keyHeld;
     int keyDown;
-
-    /// @brief Flag to check whether game is being booted and needs starting sequence to show
-    bool isStarting = true;
-    /// @brief Flag to be set after starting sequence is finished to show menu
-    bool isStartingFinish = false;
-    /// @brief Flag to be set when a state is being abandoned to stop logic while it quits
     bool isQuitting = false;
-    /// @brief Flag to be set when game should be paused to halt certain logic
     bool isPaused = false;
-    /// @brief Flag to be set when game is multiplayer to manipulate certain logic
     bool isSinglePlayer = true;
+    bool booting = true;
+
+    int frameBooted = 0;
 
 public:
     bool debugging = true;
@@ -41,22 +36,26 @@ public:
 
 
 
-    /// @brief Current state of play
+    //ENUMS
+
+    /// @brief Game states
     typedef enum
     {
         STATE_MENU,
         STATE_ACTION,
     }STATE;
 
-    /// @brief Current
+    /// @brief Menu types
     typedef enum
     {
+        MENU_START,
         MENU_MAIN,
         MENU_SETTINGS,
         MENU_PLAY,
         MENU_SHOP
     }MENUTYPE;
 
+    /// @brief Action types
     typedef enum
     {
         ACTION_SHIP_BATTLE,
@@ -80,7 +79,12 @@ public:
 
 
 
+    //FUNCTIONS
+
     Game();
+
+    /// @brief Called at boot, initialises screens and libraries for everything to come
+    void Init();
 
     /// @brief Called once per frame, used to keep track of where we are for movement, animations etc...
     void Tick();
@@ -89,17 +93,25 @@ public:
     /// @param debugging 
     void Update();
 
-    /// @brief Stops other processes and starts menu
-    /// @param debugging 
-    void StartMenuScreen();
+    void Menu_Start();
 
-    /// @brief Stops other processes and starts round 1 of game
-    void StartGame1Screen();
+    void Menu_Main();
 
-    /// @brief Stops other processes and starts round 2 of game
-    void StartGame2Screen();
+    void Menu_Settings();
 
-    /// @brief Stops other processes and starts minigame based on parameter
-    /// @param currentMinigame ID of current minigame
-    void StartMinigameScreen(int minigame);
+    void Menu_Play();
+
+    void Menu_Shop();
+
+    void Action_Battle();
+
+    void Action_MeleeBattle();
+
+    void Minigame_AimCannon();
+
+    void Minigame_SteerShip();
+
+    void Minigame_RepairWood();
+
+    void Minigame_ChangeSails();
 };
