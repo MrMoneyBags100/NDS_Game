@@ -1,20 +1,21 @@
 #include <iostream>
-#include <game.h>
-#include <player.h>
+#include <../include/game.h>
+#include <../include/player.h>
 
-// Game game;
+Game game;
 
 int main ()
 {
-    // srand(NULL);
 
-    // game.StartMenuScreen(game.debugging);
+    game.StartMenuScreen();
 
     while (1)
     {
-        // game.Tick();
+        game.Tick();
 
-        // game.Update(game.debugging);
+        game.Update();
+
+        swiWaitForVBlank();
     }
     return 0;
 }

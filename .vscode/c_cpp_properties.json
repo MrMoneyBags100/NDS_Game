@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "C:\\devkitPro\\libnds\\include",
                 "C:\\devkitPro\\libnds\\include\\nds\\arm9",
-                "C:\\devkitPro\\devkitARM"
+                "C:\\devkitPro\\devkitARM",
+                "C:\\devkitPro\\nflib\\include"
             ],
             "defines": [
                 "_DEBUG",
