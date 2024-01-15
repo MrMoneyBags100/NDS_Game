@@ -162,8 +162,11 @@ void Game::Menu_Main(int keyHeld)
             NF_LoadTiledBg("Bg/stormSea", "stormSea", 256, 256);
             NF_CreateTiledBg(0, 3, "stormSea");
             NF_UnloadTiledBg("stormSea");
+
             menuMainStage++;
+
             break;
+
         case 1:
             NF_LoadTiledBg("Bg/colmap", "colmap", 768, 512);
             NF_CreateTiledBg(1, 2, "colmap");
@@ -176,7 +179,9 @@ void Game::Menu_Main(int keyHeld)
             NF_SpriteLayer(1, 0, 2);
             
             menuMainStage++;
+
             break;
+
         case 2:
             player.HandleInput(keyHeld);
 
@@ -202,16 +207,38 @@ void Game::Menu_Main(int keyHeld)
                 NF_SetTileOfMap(1, 2, player.x / 8, player.y / 8, 2);
             if (keyHeld & KEY_X)
                 NF_SetTileOfMap(1, 2, player.x / 8, player.y / 8, 3);
+            if (keyHeld & KEY_X)
+                NF_SetTileOfMap(1, 2, player.x / 8, player.y / 8, 3);
+            if (keyHeld & KEY_START)
+                menuMainStage++;
 
             NF_UpdateVramMap(1, 2);
-
             NF_ScrollBg(1, 2, bg_x, bg_y);
 
-            // NF_SpriteOamSet(0);
-            // NF_SpriteOamSet(1);
+            break;
+
+        case 3:
+            NF_UnloadTiledBg("colmap");
+            NF_UnloadSpriteGfx(0);
+            NF_UnloadSpritePal(0);
+            menuMainStage++;
 
             break;
+
+        case 4:
+            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
+            NF_CreateTiledBg(0, 3, "exampleSky");
+            NF_UnloadTiledBg("exampleSky");
+            menuMainStage++;
+
+            break;
+
+        case 5:
+
+            break;
+
         default:
+
             break;
     }
 }

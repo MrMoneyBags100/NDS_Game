@@ -17,8 +17,8 @@ private:
 
 
 public:
-    int x;
-    int y;
+    int x = 128;
+    int y = 96;
     
     bool isAlive = true;
     bool walking = false;
@@ -30,7 +30,7 @@ public:
 
     Player();
 
-    /// @brief 
+    /// @brief Alters player values based on inputs
     /// @param keys Result of keysHeld()
     void HandleInput(int keys);
 
