@@ -8,7 +8,8 @@
 #include <C:\devkitPro\libnds\include\nds.h>
 #include <C:\devkitPro\libnds\include\filesystem.h>
 #include <../include/tempNFlib.h>
-// #include <C:\devkitPro\libnds\include\gl2d.h>
+
+#include <../include/player.h>
 
 
 
@@ -17,7 +18,7 @@ class Game
 private:
     volatile int frame = 0;
     int currentState = 0;
-    int currentMenu = 0;
+    int currentMenu = 1;
     int currentAction = 0;
     int currentMinigame = 0;
 
@@ -26,14 +27,20 @@ private:
     bool isQuitting = false;
     bool isPaused = false;
     bool isSinglePlayer = true;
-    bool booting = true;
 
+    int menuStartStage = 0;
     int frameBooted = 0;
 
+    int menuMainStage = 0;
+
+    //TEST BG SCROLL
+    int bg_x = 128;
+    int bg_y = 96;
+
 public:
+    Player player;
     bool debugging = true;
     int debugLastToggled = 0;
-
 
 
     //ENUMS
@@ -93,25 +100,25 @@ public:
     /// @param debugging 
     void Update();
 
-    void Menu_Start();
+    void Menu_Start(int keyHeld);
 
-    void Menu_Main();
+    void Menu_Main(int keyHeld);
 
-    void Menu_Settings();
+    void Menu_Settings(int keyHeld);
 
-    void Menu_Play();
+    void Menu_Play(int keyHeld);
 
-    void Menu_Shop();
+    void Menu_Shop(int keyHeld);
 
-    void Action_Battle();
+    void Action_Battle(int keyHeld);
 
-    void Action_MeleeBattle();
+    void Action_MeleeBattle(int keyHeld);
 
-    void Minigame_AimCannon();
+    void Minigame_AimCannon(int keyHeld);
 
-    void Minigame_SteerShip();
+    void Minigame_SteerShip(int keyHeld);
 
-    void Minigame_RepairWood();
+    void Minigame_RepairWood(int keyHeld);
 
-    void Minigame_ChangeSails();
+    void Minigame_ChangeSails(int keyHeld);
 };

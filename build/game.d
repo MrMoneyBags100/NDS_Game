@@ -82,7 +82,8 @@ game.o: C:/devkitPro/examples/nds/MYTESTGAME/source/game.cpp \
  C:/devkitPro/libnds/include/dswifi9.h \
  C:/devkitPro/libnds/include/dswifi_version.h \
  C:/devkitPro/libnds/include/sys/socket.h \
- C:/devkitPro/libnds/include/netinet/in.h
+ C:/devkitPro/libnds/include/netinet/in.h \
+ C:/devkitPro/examples/nds/MYTESTGAME/include/player.h
 C:/devkitPro/examples/nds/MYTESTGAME/include/game.h:
 C:\devkitPro\libnds\include\nds.h:
 C:\devkitPro\libnds\include\nds/libversion.h:
@@ -168,3 +169,4 @@ C:/devkitPro/libnds/include/dswifi9.h:
 C:/devkitPro/libnds/include/dswifi_version.h:
 C:/devkitPro/libnds/include/sys/socket.h:
 C:/devkitPro/libnds/include/netinet/in.h:
+C:/devkitPro/examples/nds/MYTESTGAME/include/player.h:

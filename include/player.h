@@ -5,6 +5,10 @@
 #include <cmath>
 #include <algorithm>
 
+#include <C:\devkitPro\libnds\include\nds.h>
+#include <C:\devkitPro\libnds\include\filesystem.h>
+#include <../include/tempNFlib.h>
+
 
 
 class Player
@@ -28,13 +32,7 @@ public:
 
     /// @brief 
     /// @param keys Result of keysHeld()
-    /// @param state ID of current state
-    void HandleInput(int keys, int state);
-    /// @brief 
-    /// @param keys Result of keysHeld()
-    /// @param state ID of current state
-    /// @param minigame ID of current minigame
-    void HandleInput(int keys, int state, int minigame);
+    void HandleInput(int keys);
 
     /// @brief Updates the player sprite location on screen
     /// @param x X co-ordinate of the desired location for sprite
