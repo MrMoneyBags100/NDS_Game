@@ -78,11 +78,6 @@ main.o: C:/devkitPro/examples/nds/MYTESTGAME/source/main.cpp \
  C:\devkitPro\nflib\include\nf_text.h \
  C:\devkitPro\nflib\include\nf_text16.h \
  C:\devkitPro\nflib\include\nf_tiledbg.h \
- C:\devkitPro\nflib\include\nf_wifi.h \
- C:/devkitPro/libnds/include/dswifi9.h \
- C:/devkitPro/libnds/include/dswifi_version.h \
- C:/devkitPro/libnds/include/sys/socket.h \
- C:/devkitPro/libnds/include/netinet/in.h \
  C:/devkitPro/examples/nds/MYTESTGAME/include/player.h
 C:/devkitPro/examples/nds/MYTESTGAME/include/game.h:
 C:\devkitPro\libnds\include\nds.h:
@@ -164,9 +159,4 @@ C:\devkitPro\nflib\include\nf_sprite3d.h:
 C:\devkitPro\nflib\include\nf_text.h:
 C:\devkitPro\nflib\include\nf_text16.h:
 C:\devkitPro\nflib\include\nf_tiledbg.h:
-C:\devkitPro\nflib\include\nf_wifi.h:
-C:/devkitPro/libnds/include/dswifi9.h:
-C:/devkitPro/libnds/include/dswifi_version.h:
-C:/devkitPro/libnds/include/sys/socket.h:
-C:/devkitPro/libnds/include/netinet/in.h:
 C:/devkitPro/examples/nds/MYTESTGAME/include/player.h:

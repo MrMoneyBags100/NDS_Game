@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <memory>
+#include <algorithm>
 
 #include <C:\devkitPro\libnds\include\nds.h>
 #include <C:\devkitPro\libnds\include\filesystem.h>
@@ -33,17 +34,13 @@ private:
 
     int menuMainStage = 0;
 
-    //TEST BG SCROLL
-    int bg_x = 128;
-    int bg_y = 96;
+    int actionShipStage = 0;
 
 public:
     Player player;
     bool debugging = true;
     int debugLastToggled = 0;
 
-
-    //ENUMS
 
     /// @brief Game states
     typedef enum
@@ -85,9 +82,6 @@ public:
     MINIGAME MinigameEnum;
 
 
-
-    //FUNCTIONS
-
     Game();
 
     /// @brief Called at boot, initialises screens and libraries for everything to come
@@ -110,7 +104,7 @@ public:
 
     void Menu_Shop(int keyHeld);
 
-    void Action_Battle(int keyHeld);
+    void Action_ShipBattle(int keyHeld);
 
     void Action_MeleeBattle(int keyHeld);
 

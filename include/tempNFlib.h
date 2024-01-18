@@ -15,4 +15,4 @@
 #include <C:\devkitPro\nflib\include\nf_text.h>
 #include <C:\devkitPro\nflib\include\nf_text16.h>
 #include <C:\devkitPro\nflib\include\nf_tiledbg.h>
-#include <C:\devkitPro\nflib\include\nf_wifi.h>
+// #include <C:\devkitPro\nflib\include\nf_wifi.h>

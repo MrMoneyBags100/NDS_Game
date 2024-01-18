@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include <memory>
 #include <algorithm>
 
 #include <C:\devkitPro\libnds\include\nds.h>
@@ -17,8 +18,8 @@ private:
 
 
 public:
-    int x = 128;
-    int y = 96;
+    int x = 128; //Center of screen by default
+    int y = 96; //Center of screen by default
     
     bool isAlive = true;
     bool walking = false;
@@ -27,6 +28,23 @@ public:
     bool canWalk = true;
     bool canRun = true;
     bool canJump = true;
+
+    int currentCharacter = 0;
+
+    int selectedMenuButton = 0;
+    int selectorX = 128;
+    int selectorY = 96;
+
+
+    //ENUMS
+
+    typedef enum
+    {
+        DEFAULT
+    }Characters;
+
+    
+    //FUNCTIONS
 
     Player();
 
