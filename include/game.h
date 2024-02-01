@@ -29,6 +29,11 @@ private:
     bool isPaused = false;
     bool isSinglePlayer = true;
 
+    int menuX = 0;
+    int menuY = 0;
+    int menuScrollSpeed = 8;//Multiples of 8 please
+    
+
     int menuStartStage = 0;
     int frameBooted = 0;
 

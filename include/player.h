@@ -33,8 +33,8 @@ public:
     bool menuBackPressed = false;
     int selectorLastMoved = 0;
     int selectorCooldown = 25;
-    int selectorX = 120;
-    int selectorY = 9;
+    int selectorX = 115;
+    int selectorY = 15;
 
 
     //ENUMS

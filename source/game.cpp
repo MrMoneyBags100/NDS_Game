@@ -17,7 +17,13 @@ Game::Game()
     NF_InitTiledBgSys(1);
     NF_InitSpriteSys(0);
     NF_InitSpriteSys(1);
-    // NF_InitTextSys(0);
+
+    NF_InitTextSys(0);
+    if (debugging)
+    {
+        NF_LoadTextFont("Fnt/default", "normal", 256, 256, 0);
+        NF_CreateTextLayer(0, 2, 0, "normal");
+    }
 
     //RETRIEVE RELEVANT GAME SAVE DATA
 }
@@ -32,11 +38,15 @@ void Game::Update()
     if(debugging) //Debug text for checking background values during testing
     {
         //PLEASE MAKE A NEW NFLIB DEBUG OVERLAY
+        char mytext[32];
+        sprintf(mytext,"x:%d  y:%d ", menuX, menuY);
+        NF_WriteText(0, 2, 1, 1, mytext);
     }
 
     scanKeys();
     int keydownInput = keysDown();
     int keyHeldInput = keysHeld();
+    player.ResetInput();
 
     player.HandleInput(keyHeldInput, keydownInput, frame, currentState, currentMenu, currentAction, currentMinigame);
 
@@ -144,7 +154,6 @@ void Game::Menu_Start()
                     menuStartStage = 0;
                     frameBooted = 0;
                     currentMenu = MENU_MAIN;
-                    player.ResetInput();
                 }
             }
             break;
@@ -160,7 +169,26 @@ void Game::Menu_Main()
         case 0:
             NF_LoadTiledBg("Bg/MainMenu", "MainMenu", 512, 256);
             NF_CreateTiledBg(1, 3, "MainMenu");
+            NF_ScrollBg(1, 3, menuX, 0);//Needs to get itself from offscreen to on-screen
 
+            menuMainStage++;
+            player.selectedMenuButton = 0;
+
+            break;
+        case 1:
+            menuX = menuX - menuScrollSpeed;
+            if(menuX <= 0)
+            {
+                menuX = 0;
+                menuMainStage++;
+                NF_ScrollBg(1, 3, menuX, 0);
+            }
+            else
+            {
+                NF_ScrollBg(1, 3, menuX, 0);
+            }
+            break;
+        case 2:
             NF_LoadSpriteGfx("Sprites/MenuSelector", 0, 64, 32);
             NF_LoadSpritePal("Sprites/MenuSelector", 0);
             NF_VramSpriteGfx(1, 0, 0, false);
@@ -172,60 +200,136 @@ void Game::Menu_Main()
             NF_UnloadSpritePal(0);
 
             menuMainStage++;
-
             break;
-
-        case 1:
+        case 3:
             NF_MoveSprite(1, 0, player.selectorX, player.selectorY);
             if (player.menuButtonPressed)
             {
                 NF_FreeSpriteGfx(1, 0);
-                menuMainStage = 0;
-                switch (player.selectedMenuButton)
+                menuMainStage++;
+            }
+            break;
+        case 4:
+            menuX = menuX + menuScrollSpeed;
+            if(menuX > 256)
+            {
+                menuMainStage++;
+            }
+            else
+            {
+                NF_ScrollBg(1, 3, menuX, menuY);
+            }
+            break;
+        case 5:
+            switch (player.selectedMenuButton)
                 {
                     case 0:
                         currentMenu = MENU_PLAY;
                         break;
                     case 1:
-                        currentMenu = MENU_SHOP;
-                        break;
-                    case 2:
                         currentMenu = MENU_COLLECTION;
                         break;
-                    case 3:
+                    case 2:
                         currentMenu = MENU_SETTINGS;
                         break;
                 }
-                player.ResetInput();
-            }
 
+                NF_UnloadTiledBg("MainMenu");
+                player.selectedMenuButton = 0;
+                player.menuButtonPressed = false;
+                menuMainStage = 0;
             break;
+
         default:
             break;
     }
 }
 
 void Game::Menu_Settings()
-{
+{       
     switch (menuSettingsStage)
     {
         case 0:
-            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
-            NF_CreateTiledBg(1, 3, "exampleSky");
-            NF_UnloadTiledBg("exampleSky");
+            NF_LoadTiledBg("Bg/MenuSettings", "MenuSettings", 512, 256);
+            NF_CreateTiledBg(1, 3, "MenuSettings");
+            NF_ScrollBg(1, 3, menuX, 0);//Needs to get itself from offscreen to on-screen
+
             menuSettingsStage++;
+            player.selectedMenuButton = 0;
+
             break;
         case 1:
-            if (player.menuButtonPressed)
+            menuX = menuX - menuScrollSpeed;
+            if(menuX <= 0)
             {
-                
+                menuX = 0;
+                menuSettingsStage++;
+                NF_ScrollBg(1, 3, menuX, 0);
             }
-            else if (player.menuBackPressed)
+            else
             {
-                currentMenu = MENU_MAIN;
-                menuSettingsStage = 0;
+                NF_ScrollBg(1, 3, menuX, 0);
             }
             break;
+        case 2:
+            NF_LoadSpriteGfx("Sprites/MenuSelector", 0, 64, 32);
+            NF_LoadSpritePal("Sprites/MenuSelector", 0);
+            NF_VramSpriteGfx(1, 0, 0, false);
+            NF_VramSpritePal(1, 0, 0);
+
+            NF_CreateSprite(1, 0, 0, 0, player.selectorX, player.selectorY);
+
+            NF_UnloadSpriteGfx(0);
+            NF_UnloadSpritePal(0);
+
+            menuSettingsStage++;
+            break;
+        case 3:
+            NF_MoveSprite(1, 0, player.selectorX, player.selectorY);
+            if (player.menuButtonPressed || player.menuBackPressed)
+            {
+                NF_FreeSpriteGfx(1, 0);
+                menuSettingsStage++;
+            }
+            break;
+        case 4:
+            menuX = menuX + menuScrollSpeed;
+            if(menuX > 256)
+            {
+                menuSettingsStage++;
+            }
+            else
+            {
+                NF_ScrollBg(1, 3, menuX, menuY);
+            }
+            break;
+        case 5:
+            if (player.menuBackPressed)
+            {
+                currentMenu = MENU_MAIN;
+            }
+            else
+            {
+                switch (player.selectedMenuButton)
+                    {
+                        case 0:
+                            
+                            break;
+                        case 1:
+                            
+                            break;
+                        case 2:
+                            
+                            break;
+                    }
+            }
+
+            NF_UnloadTiledBg("MenuSettings");
+            player.selectedMenuButton = 0;
+            player.menuBackPressed = false;
+            menuSettingsStage = 0;
+            break;
+
         default:
             break;
     }
@@ -236,48 +340,176 @@ void Game::Menu_Play()
     switch (menuPlayStage)
     {
         case 0:
-            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
-            NF_CreateTiledBg(1, 3, "exampleSky");
-            NF_UnloadTiledBg("exampleSky");
+            NF_LoadTiledBg("Bg/MenuPlay", "MenuPlay", 512, 256);
+            NF_CreateTiledBg(1, 3, "MenuPlay");
+            NF_ScrollBg(1, 3, menuX, 0);//Needs to get itself from offscreen to on-screen
+
             menuPlayStage++;
+            player.selectedMenuButton = 0;
+
             break;
         case 1:
-            if (player.menuButtonPressed)
+            menuX = menuX - menuScrollSpeed;
+            if(menuX <= 0)
             {
-
+                menuX = 0;
+                menuPlayStage++;
+                NF_ScrollBg(1, 3, menuX, 0);
             }
-            else if (player.menuBackPressed)
+            else
             {
-                currentMenu = MENU_MAIN;
-                menuPlayStage = 0;
+                NF_ScrollBg(1, 3, menuX, 0);
             }
             break;
+        case 2:
+            NF_LoadSpriteGfx("Sprites/MenuSelector", 0, 64, 32);
+            NF_LoadSpritePal("Sprites/MenuSelector", 0);
+            NF_VramSpriteGfx(1, 0, 0, false);
+            NF_VramSpritePal(1, 0, 0);
+
+            NF_CreateSprite(1, 0, 0, 0, player.selectorX, player.selectorY);
+
+            NF_UnloadSpriteGfx(0);
+            NF_UnloadSpritePal(0);
+
+            menuPlayStage++;
+            break;
+        case 3:
+            NF_MoveSprite(1, 0, player.selectorX, player.selectorY);
+            if (player.menuButtonPressed || player.menuBackPressed)
+            {
+                NF_FreeSpriteGfx(1, 0);
+                menuPlayStage++;
+            }
+            break;
+        case 4:
+            menuX = menuX + menuScrollSpeed;
+            if(menuX > 256)
+            {
+                menuPlayStage++;
+            }
+            else
+            {
+                NF_ScrollBg(1, 3, menuX, menuY);
+            }
+            break;
+        case 5:
+            if (player.menuBackPressed)
+            {
+                currentMenu = MENU_MAIN;
+            }
+            else
+            {
+                switch (player.selectedMenuButton)
+                    {
+                        case 0:
+                            
+                            break;
+                        case 1:
+                            
+                            break;
+                        case 2:
+                            
+                            break;
+                    }
+            }
+
+            NF_UnloadTiledBg("MenuPlay");
+            player.selectedMenuButton = 0;
+            player.menuBackPressed = false;
+            menuPlayStage = 0;
+            break;
+
         default:
             break;
     }
 }
 
 void Game::Menu_Collection()
-{
+{       
     switch (menuCollectionStage)
     {
         case 0:
-            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
-            NF_CreateTiledBg(1, 3, "exampleSky");
-            NF_UnloadTiledBg("exampleSky");
+            NF_LoadTiledBg("Bg/MenuCollection", "MenuCollection", 512, 256);
+            NF_CreateTiledBg(1, 3, "MenuCollection");
+            NF_ScrollBg(1, 3, menuX, 0);//Needs to get itself from offscreen to on-screen
+
             menuCollectionStage++;
+            player.selectedMenuButton = 0;
+
             break;
         case 1:
-            if (player.menuButtonPressed)
+            menuX = menuX - menuScrollSpeed;
+            if(menuX <= 0)
             {
-                
+                menuX = 0;
+                menuCollectionStage++;
+                NF_ScrollBg(1, 3, menuX, 0);
             }
-            else if (player.menuBackPressed)
+            else
             {
-                currentMenu = MENU_MAIN;
-                menuCollectionStage = 0;
+                NF_ScrollBg(1, 3, menuX, 0);
             }
             break;
+        case 2:
+            NF_LoadSpriteGfx("Sprites/MenuSelector", 0, 64, 32);
+            NF_LoadSpritePal("Sprites/MenuSelector", 0);
+            NF_VramSpriteGfx(1, 0, 0, false);
+            NF_VramSpritePal(1, 0, 0);
+
+            NF_CreateSprite(1, 0, 0, 0, player.selectorX, player.selectorY);
+
+            NF_UnloadSpriteGfx(0);
+            NF_UnloadSpritePal(0);
+
+            menuCollectionStage++;
+            break;
+        case 3:
+            NF_MoveSprite(1, 0, player.selectorX, player.selectorY);
+            if (player.menuButtonPressed || player.menuBackPressed)
+            {
+                NF_FreeSpriteGfx(1, 0);
+                menuCollectionStage++;
+            }
+            break;
+        case 4:
+            menuX = menuX + menuScrollSpeed;
+            if(menuX > 256)
+            {
+                menuCollectionStage++;
+            }
+            else
+            {
+                NF_ScrollBg(1, 3, menuX, menuY);
+            }
+            break;
+        case 5:
+            if (player.menuBackPressed)
+            {
+                currentMenu = MENU_MAIN;
+            }
+            else
+            {
+                switch (player.selectedMenuButton)
+                    {
+                        case 0:
+                            
+                            break;
+                        case 1:
+                            
+                            break;
+                        case 2:
+                            
+                            break;
+                    }
+            }
+
+            NF_UnloadTiledBg("MenuCollection");
+            player.selectedMenuButton = 0;
+            player.menuBackPressed = false;
+            menuCollectionStage = 0;
+            break;
+
         default:
             break;
     }
@@ -301,6 +533,7 @@ void Game::Menu_Shop()
             else if (player.menuBackPressed)
             {
                 currentMenu = MENU_MAIN;
+                player.menuButtonPressed = false;
                 menuShopStage = 0;
             }
             break;

@@ -16,29 +16,26 @@ void Player::HandleInput(int keysHeld, int keysDown, int frame, int currentState
             {
                 switch (currentMenu)
                 {
-                    case 0://Start
+                    case 0://Start Menu
                         if (keysHeld) menuButtonPressed = true;
                         break;
-                    case 1://Main
+                    case 1://Main Menu
                         if(keysDown & KEY_DOWN) selectedMenuButton++;
                         if(keysDown & KEY_UP) selectedMenuButton--;
-                        if (selectedMenuButton > 3) selectedMenuButton = 0;
-                        if (selectedMenuButton < 0) selectedMenuButton = 3;
+                        if (selectedMenuButton > 2) selectedMenuButton = 0;
+                        if (selectedMenuButton < 0) selectedMenuButton = 2;
 
-                        selectorX = 120;
+                        selectorX = 115;
                         switch (selectedMenuButton)
                         {
-                            case 0://Play
-                                selectorY = 9;
+                            case 0://Play Button
+                                selectorY = 15;
                                 break;
-                            case 1://Shop
-                                selectorY = 57;
+                            case 1://Collection Button
+                                selectorY = 80;
                                 break;
-                            case 2://Collection
-                                selectorY = 105;
-                                break;
-                            case 3://Settings
-                                selectorY = 153;
+                            case 2://Settings Button
+                                selectorY = 145;
                                 break;
                         }
                         if (keysDown & KEY_A) menuButtonPressed = true;
@@ -46,27 +43,84 @@ void Player::HandleInput(int keysHeld, int keysDown, int frame, int currentState
 
                         break;
 
-                    case 2://Settings
+                    case 2://Settings Menu
+                        if(keysDown & KEY_DOWN) selectedMenuButton++;
+                        if(keysDown & KEY_UP) selectedMenuButton--;
+                        if (selectedMenuButton > 2) selectedMenuButton = 0;
+                        if (selectedMenuButton < 0) selectedMenuButton = 2;
+
+                        selectorX = 115;
+                        switch (selectedMenuButton)
+                        {
+                            case 0://??? Button
+                                selectorY = 15;
+                                break;
+                            case 1://??? Button
+                                selectorY = 80;
+                                break;
+                            case 2://??? Button
+                                selectorY = 145;
+                                break;
+                        }
                         if (keysDown & KEY_A) menuButtonPressed = true;
                         if (keysDown & KEY_B) menuBackPressed = true;
 
                         break;
 
-                    case 3://Play
+                    case 3://Play Menu
+                        if(keysDown & KEY_DOWN) selectedMenuButton++;
+                        if(keysDown & KEY_UP) selectedMenuButton--;
+                        if (selectedMenuButton > 2) selectedMenuButton = 0;
+                        if (selectedMenuButton < 0) selectedMenuButton = 2;
+
+                        selectorX = 115;
+                        switch (selectedMenuButton)
+                        {
+                            case 0://Story Button
+                                selectorY = 15;
+                                break;
+                            case 1://PvE Button
+                                selectorY = 80;
+                                break;
+                            case 2://PvP Button
+                                selectorY = 145;
+                                break;
+                        }
                         if (keysDown & KEY_A) menuButtonPressed = true;
                         if (keysDown & KEY_B) menuBackPressed = true;
 
                         break;
-                    case 4://Shop
+
+                    case 4://Shop Menu
                         if (keysDown & KEY_A) menuButtonPressed = true;
                         if (keysDown & KEY_B) menuBackPressed = true;
 
                         break;
-                    case 5://Collection
+
+                    case 5://Collection Menu
+                        if(keysDown & KEY_DOWN) selectedMenuButton++;
+                        if(keysDown & KEY_UP) selectedMenuButton--;
+                        if (selectedMenuButton > 2) selectedMenuButton = 0;
+                        if (selectedMenuButton < 0) selectedMenuButton = 2;
+
+                        selectorX = 115;
+                        switch (selectedMenuButton)
+                        {
+                            case 0://Wardrobe Button
+                                selectorY = 15;
+                                break;
+                            case 1://Shop Button
+                                selectorY = 80;
+                                break;
+                            case 2://Treasury Button
+                                selectorY = 145;
+                                break;
+                        }
                         if (keysDown & KEY_A) menuButtonPressed = true;
                         if (keysDown & KEY_B) menuBackPressed = true;
 
                         break;
+
                     default:
                         break;
                     break;
@@ -85,5 +139,5 @@ void Player::HandleInput(int keysHeld, int keysDown, int frame, int currentState
 void Player::ResetInput()
 {
     menuButtonPressed = false;
-    menuBackPressed = false;
+    // menuBackPressed = false;
 }
