@@ -34,12 +34,19 @@ private:
 
     int menuMainStage = 0;
 
+    int menuPlayStage = 0;
+
+    int menuShopStage = 0;
+
+    int menuCollectionStage = 0;
+
+    int menuSettingsStage = 0;
+
     int actionShipStage = 0;
 
 public:
     Player player;
     bool debugging = true;
-    int debugLastToggled = 0;
 
 
     /// @brief Game states
@@ -56,7 +63,8 @@ public:
         MENU_MAIN,
         MENU_SETTINGS,
         MENU_PLAY,
-        MENU_SHOP
+        MENU_SHOP,
+        MENU_COLLECTION
     }MENUTYPE;
 
     /// @brief Action types
@@ -94,25 +102,27 @@ public:
     /// @param debugging 
     void Update();
 
-    void Menu_Start(int keyHeld);
+    void Menu_Start();
 
-    void Menu_Main(int keyHeld);
+    void Menu_Main();
 
-    void Menu_Settings(int keyHeld);
+    void Menu_Settings();
 
-    void Menu_Play(int keyHeld);
+    void Menu_Play();
 
-    void Menu_Shop(int keyHeld);
+    void Menu_Collection();
 
-    void Action_ShipBattle(int keyHeld);
+    void Menu_Shop();
 
-    void Action_MeleeBattle(int keyHeld);
+    void Action_ShipBattle();
 
-    void Minigame_AimCannon(int keyHeld);
+    void Action_MeleeBattle();
 
-    void Minigame_SteerShip(int keyHeld);
+    void Minigame_AimCannon();
 
-    void Minigame_RepairWood(int keyHeld);
+    void Minigame_SteerShip();
 
-    void Minigame_ChangeSails(int keyHeld);
+    void Minigame_RepairWood();
+
+    void Minigame_ChangeSails();
 };

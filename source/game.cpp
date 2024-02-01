@@ -18,6 +18,8 @@ Game::Game()
     NF_InitSpriteSys(0);
     NF_InitSpriteSys(1);
     // NF_InitTextSys(0);
+
+    //RETRIEVE RELEVANT GAME SAVE DATA
 }
 
 void Game::Tick()
@@ -27,21 +29,16 @@ void Game::Tick()
 
 void Game::Update()
 {
-    // if(debugging) //Debug text for checking background values during testing
-    // {
-    //     if (frame < 50)
-    //     {
-    //         consoleDemoInit();
-    //     }
-    //     consoleClear();
-    //     iprintf("\x1b[7;1HFrames: %i", frame);
-    //     iprintf("\x1b[8;1HMenu_State: %i", currentMenu);
-    // }
+    if(debugging) //Debug text for checking background values during testing
+    {
+        //PLEASE MAKE A NEW NFLIB DEBUG OVERLAY
+    }
 
     scanKeys();
     int keydownInput = keysDown();
     int keyHeldInput = keysHeld();
-    if (keydownInput & keyHeldInput); //Here to avoid "unused variable" flag in make process
+
+    player.HandleInput(keyHeldInput, keydownInput, frame, currentState, currentMenu, currentAction, currentMinigame);
 
     switch (currentState) //Check current STATE
     {
@@ -49,19 +46,22 @@ void Game::Update()
             switch (currentMenu) //Check current MENU
             {
                 case MENU_START:
-                    Menu_Start(keyHeldInput);
+                    Menu_Start();
                     break;
                 case MENU_MAIN:
-                    Menu_Main(keyHeldInput);
+                    Menu_Main();
                     break;
                 case MENU_SETTINGS:
-                    Menu_Settings(keyHeldInput);
+                    Menu_Settings();
                     break;
                 case MENU_PLAY:
-                    Menu_Play(keyHeldInput);
+                    Menu_Play();
                     break;
                 case MENU_SHOP:
-                    Menu_Shop(keyHeldInput);
+                    Menu_Shop();
+                    break;
+                case MENU_COLLECTION:
+                    Menu_Collection();
                     break;
                 default:
                     break;
@@ -71,10 +71,10 @@ void Game::Update()
             switch (currentAction) //Check current ACTION
             {
                 case ACTION_SHIP_BATTLE:
-                    Action_ShipBattle(keyHeldInput);
+                    Action_ShipBattle();
                     break;
                 case ACTION_MELEE_BATTLE:
-                    Action_MeleeBattle(keyHeldInput);
+                    Action_MeleeBattle();
                     break;
                 default:
                     break;
@@ -84,16 +84,16 @@ void Game::Update()
                 case MINIGAME_NONE:
                     break;
                 case MINIGAME_AIM_CANNON:
-                    Minigame_AimCannon(keyHeldInput);
+                    Minigame_AimCannon();
                     break;
                 case MINIGAME_STEER_SHIP:
-                    Minigame_SteerShip(keyHeldInput);
+                    Minigame_SteerShip();
                     break;
                 case MINIGAME_REPAIR_WOOD:
-                    Minigame_RepairWood(keyHeldInput);
+                    Minigame_RepairWood();
                     break;
                 case MINIGAME_CHANGE_SAILS:
-                    Minigame_ChangeSails(keyHeldInput);
+                    Minigame_ChangeSails();
                     break;
                 default:
                     break;
@@ -109,7 +109,7 @@ void Game::Update()
     return;
 }
 
-void Game::Menu_Start(int keyHeld)
+void Game::Menu_Start()
 {
     switch (menuStartStage)
     {
@@ -121,27 +121,31 @@ void Game::Menu_Start(int keyHeld)
             frameBooted = frame;
             break;
         case 1:
-            if (frameBooted+200 <= frame)
+            if (frameBooted+100 <= frame)
             {
                 NF_CreateTiledBg(0, 3, "stormSea");
                 menuStartStage++;
             }
             break;
         case 2:
-            if (frameBooted+400 <= frame)
+            if (frameBooted+200 <= frame)
             {
                 NF_CreateTiledBg(0, 3, "exampleSky");
                 menuStartStage++;
             }
             break;
         case 3:
-            if (frameBooted+600 <= frame)
+            if (frameBooted+300 <= frame)
             {
-                NF_UnloadTiledBg("exampleSky");
-                NF_UnloadTiledBg("stormSea");
-                menuStartStage = 0;
-                frameBooted = 0;
-                currentMenu = MENU_MAIN;
+                if ((player.menuButtonPressed) || (frameBooted+1000 <= frame))
+                {
+                    NF_UnloadTiledBg("exampleSky");
+                    NF_UnloadTiledBg("stormSea");
+                    menuStartStage = 0;
+                    frameBooted = 0;
+                    currentMenu = MENU_MAIN;
+                    player.ResetInput();
+                }
             }
             break;
         default:
@@ -149,78 +153,188 @@ void Game::Menu_Start(int keyHeld)
     }
 }
 
-void Game::Menu_Main(int keyHeld)
+void Game::Menu_Main()
 {
     switch (menuMainStage)
     {
         case 0:
-            NF_LoadTiledBg("Bg/MainMenuSmall", "MainMenu", 256, 256);
+            NF_LoadTiledBg("Bg/MainMenu", "MainMenu", 512, 256);
             NF_CreateTiledBg(1, 3, "MainMenu");
 
-            // NF_LoadSpriteGfx("Sprites/SpriteTest", 0, 64, 64);
-            // NF_LoadSpritePal("Sprites/SpriteTest", 0);
-            // NF_VramSpriteGfx(1, 0, 0, false);
-            // NF_VramSpritePal(1, 0, 0);
+            NF_LoadSpriteGfx("Sprites/MenuSelector", 0, 64, 32);
+            NF_LoadSpritePal("Sprites/MenuSelector", 0);
+            NF_VramSpriteGfx(1, 0, 0, false);
+            NF_VramSpritePal(1, 0, 0);
 
-            // NF_CreateSprite(1, 0, 0, 0, player.selectorX, player.selectorY);
+            NF_CreateSprite(1, 0, 0, 0, player.selectorX, player.selectorY);
+
+            NF_UnloadSpriteGfx(0);
+            NF_UnloadSpritePal(0);
 
             menuMainStage++;
 
             break;
 
         case 1:
-            player.HandleInput(keyHeld);
-            // NF_MoveSprite(1, 0, player.selectorX, player.selectorY);
+            NF_MoveSprite(1, 0, player.selectorX, player.selectorY);
+            if (player.menuButtonPressed)
+            {
+                NF_FreeSpriteGfx(1, 0);
+                menuMainStage = 0;
+                switch (player.selectedMenuButton)
+                {
+                    case 0:
+                        currentMenu = MENU_PLAY;
+                        break;
+                    case 1:
+                        currentMenu = MENU_SHOP;
+                        break;
+                    case 2:
+                        currentMenu = MENU_COLLECTION;
+                        break;
+                    case 3:
+                        currentMenu = MENU_SETTINGS;
+                        break;
+                }
+                player.ResetInput();
+            }
 
             break;
-            
         default:
-
             break;
     }
 }
 
-void Game::Menu_Settings(int keyHeld)
+void Game::Menu_Settings()
+{
+    switch (menuSettingsStage)
+    {
+        case 0:
+            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
+            NF_CreateTiledBg(1, 3, "exampleSky");
+            NF_UnloadTiledBg("exampleSky");
+            menuSettingsStage++;
+            break;
+        case 1:
+            if (player.menuButtonPressed)
+            {
+                
+            }
+            else if (player.menuBackPressed)
+            {
+                currentMenu = MENU_MAIN;
+                menuSettingsStage = 0;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Game::Menu_Play()
+{
+    switch (menuPlayStage)
+    {
+        case 0:
+            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
+            NF_CreateTiledBg(1, 3, "exampleSky");
+            NF_UnloadTiledBg("exampleSky");
+            menuPlayStage++;
+            break;
+        case 1:
+            if (player.menuButtonPressed)
+            {
+
+            }
+            else if (player.menuBackPressed)
+            {
+                currentMenu = MENU_MAIN;
+                menuPlayStage = 0;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Game::Menu_Collection()
+{
+    switch (menuCollectionStage)
+    {
+        case 0:
+            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
+            NF_CreateTiledBg(1, 3, "exampleSky");
+            NF_UnloadTiledBg("exampleSky");
+            menuCollectionStage++;
+            break;
+        case 1:
+            if (player.menuButtonPressed)
+            {
+                
+            }
+            else if (player.menuBackPressed)
+            {
+                currentMenu = MENU_MAIN;
+                menuCollectionStage = 0;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Game::Menu_Shop()
+{
+    switch (menuShopStage)
+    {
+        case 0:
+            NF_LoadTiledBg("Bg/exampleSky", "exampleSky", 256, 256);
+            NF_CreateTiledBg(1, 3, "exampleSky");
+            NF_UnloadTiledBg("exampleSky");
+            menuShopStage++;
+            break;
+        case 1:
+            if (player.menuButtonPressed)
+            {
+                
+            }
+            else if (player.menuBackPressed)
+            {
+                currentMenu = MENU_MAIN;
+                menuShopStage = 0;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Game::Action_ShipBattle()
+{
+
+}
+
+void Game::Action_MeleeBattle()
 {
     
 }
 
-void Game::Menu_Play(int keyHeld)
+void Game::Minigame_AimCannon()
 {
     
 }
 
-void Game::Menu_Shop(int keyHeld)
+void Game::Minigame_SteerShip()
 {
     
 }
 
-void Game::Action_ShipBattle(int keyHeld)
-{
-
-}
-
-void Game::Action_MeleeBattle(int keyHeld)
+void Game::Minigame_RepairWood()
 {
     
 }
 
-void Game::Minigame_AimCannon(int keyHeld)
-{
-    
-}
-
-void Game::Minigame_SteerShip(int keyHeld)
-{
-    
-}
-
-void Game::Minigame_RepairWood(int keyHeld)
-{
-    
-}
-
-void Game::Minigame_ChangeSails(int keyHeld)
+void Game::Minigame_ChangeSails()
 {
     
 }

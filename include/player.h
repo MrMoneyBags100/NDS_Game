@@ -18,9 +18,6 @@ private:
 
 
 public:
-    int x = 128; //Center of screen by default
-    int y = 96; //Center of screen by default
-    
     bool isAlive = true;
     bool walking = false;
     bool running = false;
@@ -32,8 +29,12 @@ public:
     int currentCharacter = 0;
 
     int selectedMenuButton = 0;
-    int selectorX = 128;
-    int selectorY = 96;
+    bool menuButtonPressed = false;
+    bool menuBackPressed = false;
+    int selectorLastMoved = 0;
+    int selectorCooldown = 25;
+    int selectorX = 120;
+    int selectorY = 9;
 
 
     //ENUMS
@@ -50,13 +51,7 @@ public:
 
     /// @brief Alters player values based on inputs
     /// @param keys Result of keysHeld()
-    void HandleInput(int keys);
+    void HandleInput(int keysDown, int keysHeld, int frame, int currentState, int currentMenu, int currentAction, int currentMinigame);
 
-    /// @brief Updates the player sprite location on screen
-    /// @param x X co-ordinate of the desired location for sprite
-    /// @param y Y co-ordinate of the desired location for sprite
-    void TranslatePlayer(int x, int y);
-
-    /// @brief With player values, updates player sprite, things like rotation and animation
-    void UpdatePlayer();
+    void ResetInput();
 };
